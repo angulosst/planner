@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLANNER DETECTOR - Sistema DETECTA®</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            background: #fefefe;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto 20px auto;
+            background: white;
+            padding: 20mm;
+            page-break-after: always;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .page-footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 10px;
+        }
+        
+        .cover {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .cover h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        
+        .cover .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+        
+        .cover .tagline {
+            font-size: 1rem;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+        
+        .cover .transform-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 400px;
+        }
+        
+        .owner-info {
+            background: rgba(255, 255, 255, 0.9);
+            color: #374151;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .section-header {
+            background: linear-gradient(90deg, #f3f4f6, #e5e7eb);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 25px 0 20px 0;
+            border-left: 5px solid #2563eb;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detection-day {
+            background: #fef7ed;
+            border: 2px solid #fb923c;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .detection-day h3 {
+            color: #ea580c;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .morning-prep {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .question-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .question-box label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .question-box input, .question-box textarea, .question-box select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .question-box textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        
+        .priority-box {
+            background: #f0fdf4;
+            border: 2px solid #16a34a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .tasks-box {
+            background: #fefce8;
+            border: 1px solid #eab308;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .evening-review {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-item input[type="checkbox"], .checkbox-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .rating-scale {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .rating-scale .number {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .rating-scale .number:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        
+        .examples-list {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .examples-list ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .examples-list li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .examples-list li:before {
+            content: "•";
+            color: #6b7280;
+            position: absolute;
+            left: 0;
+        }
+        
+        .troubleshooting {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .troubleshooting h4 {
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+        
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .pattern-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .theme-areas {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .area-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .area-box h4 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+        
+        .goal-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .goal-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #2563eb;
+        }
+        
+        .action-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .action-table th, .action-table td {
+            border: 1px solid #d1d5db;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .action-table th {
+            background: #f9fafb;
+            font-weight: 600;
+        }
+        
+        .relationships-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .relationship-box {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        @media print {
+            .page {
+              width: 210mm;
+        height: 297mm;
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+        padding: 20mm 20mm 40mm 20mm; /* ← NUEVO: Padding para impresión */
+    }
+    
+    .page-footer { /* ← NUEVO: Bloque completo agregado */
+        position: absolute !important;
+        bottom: 15mm !important;
+        left: 20mm !important;
+        right: 20mm !important;
+}
+            
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PORTADA -->
+    <div class="page">
+        <div class="cover">
+            <h1>PLANNER DETECTOR</h1>
+            <div class="subtitle">Sistema DETECTA®</div>
+            <div class="tagline">De Desenfocado a Imparable</div>
+            
+            <div class="transform-box">
+                <div style="font-size: 1.5rem; margin-bottom: 10px;">✨ Detecta • Enfoca • Ejecuta • Transforma ✨</div>
+                <div>Elimina distracciones y convierte tu semana laboral en tareas cumplidas en solo 5 minutos</div>
+            </div>
+            
+            <div class="owner-info">
+                <div><strong>Este planner pertenece a:</strong></div>
+                <div style="margin: 10px 0;">
+                    <input type="text" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" placeholder="Tu nombre">
+                </div>
+                <div><strong>Año:</strong> <input type="text" style="width: 80px; padding: 4px; border: 1px solid #ccc; border-radius: 4px;" placeholder="2024"></div>
+                <div style="margin-top: 15px; font-style: italic;">"Tu transformación empieza hoy"</div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+    
+    <!-- PÁGINA 1: BIENVENIDA Y PROPÓSITO -->
+    <div class="page">
+        <div class="section-header">
+            <h2>🌟 TU DÍA HA LLEGADO</h2>
+        </div>
+        
+        <p style="font-size: 1.1rem; margin-bottom: 20px;"><strong>¡Felicidades por decidir transformar tu vida!</strong></p>
+        
+        <p>Cuando adquieres un planner, no solo estás comprando un producto — <strong>estás invirtiendo en ti mismo</strong> y dando un paso más cerca de tus metas, sueños y éxito.</p>
+        
+        <div class="section-header">
+            <h2>🔍 ¿QUÉ HACE ÚNICO A ESTE PLANNER?</h2>
+        </div>
+        
+        <p>A diferencia de otros planners, este tiene un <strong>"detector" integrado</strong> que te ayuda a:</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0;">
+            <div style="background: #eff6ff; padding: 15px; border-radius: 8px;">
+                <strong>🔎 DETECTAR</strong><br>
+                qué te drena energía invisiblemente
+            </div>
+            <div style="background: #f0fdf4; padding: 15px; border-radius: 8px;">
+                <strong>🎯 ENFOCAR</strong><br>
+                tu atención en lo que realmente importa
+            </div>
+            <div style="background: #fef7ed; padding: 15px; border-radius: 8px;">
+                <strong>⚡ EJECUTAR</strong><br>
+                con claridad y propósito
+            </div>
+            <div style="background: #f5f3ff; padding: 15px; border-radius: 8px;">
+                <strong>🚀 TRANSFORMAR</strong><br>
+                tu productividad de forma sostenible
+            </div>
+        </div>
+        
+        <div class="section-header">
+            <h2>📅 CÓMO FUNCIONA ESTE SISTEMA</h2>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 20px 0;">
+            <div style="background: #fef2f2; padding: 20px; border-radius: 10px; border-left: 5px solid #ef4444;">
+                <h3 style="color: #dc2626; margin-bottom: 10px;">FASE 1: DETECCIÓN INTENSIVA</h3>
+                <p><strong>Semana 1:</strong> 7 días de detección profunda (5 min/día)</p>
+                <p style="font-style: italic; margin-top: 8px;">Identificas exactamente qué te drena sin que lo notes</p>
+            </div>
+            
+            <div style="background: #fefce8; padding: 20px; border-radius: 10px; border-left: 5px solid #eab308;">
+                <h3 style="color: #ca8a04; margin-bottom: 10px;">FASE 2: ANÁLISIS Y REFLEXIÓN</h3>
+                <p><strong>Semana 2:</strong> Análisis de patrones + Reflexión anual</p>
+                <p style="font-style: italic; margin-top: 8px;">Conectas tus drenes con tu historia y relaciones</p>
+            </div>
+            
+            <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; border-left: 5px solid #22c55e;">
+                <h3 style="color: #16a34a; margin-bottom: 10px;">FASE 3: VISIÓN Y PLANIFICACIÓN</h3>
+                <p><strong>Semana 3:</strong> Tema anual + Metas auténticas + Plan de acción</p>
+                <p style="font-style: italic; margin-top: 8px;">Creas objetivos basados en tu autoconocimiento real</p>
+            </div>
+            
+            <div style="background: #eff6ff; padding: 20px; border-radius: 10px; border-left: 5px solid #3b82f6;">
+                <h3 style="color: #2563eb; margin-bottom: 10px;">FASE 4: MANTENIMIENTO</h3>
+                <p><strong>Resto del año:</strong> Sistema de seguimiento y evolución</p>
+                <p style="font-style: italic; margin-top: 8px;">Mantienes y profundizas tu transformación</p>
+            </div>
+        </div>
+        
+        <div class="section-header">
+            <h2>🎯 TU PROMESA PERSONAL</h2>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 15px 0;">
+            <h3 style="color: #16a34a; margin-bottom: 15px;">EN LOS PRÓXIMOS 7 DÍAS, VAS A:</h3>
+            <div class="checkbox-group" style="flex-direction: column; align-items: flex-start;">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="promise1">
+                    <label for="promise1">Identificar exactamente qué te está drenando energía sin que lo notes</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="promise2">
+                    <label for="promise2">Eliminar la distracción y transformar tu semana en tareas cumplidas</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="promise3">
+                    <label for="promise3">Activar tu enfoque usando solo 5 minutos de planificación diaria</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+    <!-- PÁGINA 2: INSTRUCCIONES DE USO -->
+    <div class="page">
+        <div class="section-header">
+            <h2>📖 INSTRUCCIONES DE USO</h2>
+        </div>
+        
+        <div class="section-header">
+            <h2>⏰ RUTINA DIARIA RECOMENDADA</h2>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
+            <div style="background: #fef7ed; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #ea580c; margin-bottom: 15px;">🌅 MAÑANA (5 minutos):</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin: 8px 0;">• Completa la sección "Preparación matutina" del día</li>
+                    <li style="margin: 8px 0;">• Define tu prioridad #1 del día</li>
+                    <li style="margin: 8px 0;">• Responde las preguntas de detección</li>
+                    <li style="margin: 8px 0;">• Planifica tu estrategia para evitar drenes</li>
+                </ul>
+            </div>
+            
+            <div style="background: #f0fdf4; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #16a34a; margin-bottom: 15px;">☀️ DURANTE EL DÍA:</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin: 8px 0;">• Consulta tu prioridad y las 3 tareas esenciales</li>
+                    <li style="margin: 8px 0;">• Mantén atención a lo que detectaste en la mañana</li>
+                    <li style="margin: 8px 0;">• Aplica tu estrategia cuando sea necesario</li>
+                    <li style="margin: 8px 0;">• Marca tareas completadas</li>
+                </ul>
+            </div>
+            
+            <div style="background: #eff6ff; padding: 20px; border-radius: 10px;">
+                <h3 style="color: #2563eb; margin-bottom: 15px;">🌙 NOCHE (5 minutos):</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin: 8px 0;">• Completa la "Revisión Nocturna"</li>
+                    <li style="margin: 8px 0;">• Reflexiona sobre qué funcionó y qué no</li>
+                    <li style="margin: 8px 0;">• Anota tu descubrimiento del día</li>
+                    <li style="margin: 8px 0;">• Prepara mentalmente el día siguiente</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="troubleshooting">
+            <h4>🆘 SOLUCIONES A PROBLEMAS COMUNES</h4>
+            
+            <div style="margin: 15px 0; padding: 15px; background: white; border-radius: 8px;">
+                <h4 style="color: #374151;">🤔 "NO DETECTÉ NADA CLARO"</h4>
+                <p>→ <strong>Está bien, algunos días son menos obvios</strong><br>
+                → Enfócate solo en tu prioridad #1 del día<br>
+                → Presta más atención a tus emociones cada hora<br>
+                → El patrón se volverá más claro en los próximos días</p>
+            </div>
+            
+            <div style="margin: 15px 0; padding: 15px; background: white; border-radius: 8px;">
+                <h4 style="color: #374151;">🔄 "MI ESTRATEGIA DEL DÍA NO FUNCIONÓ"</h4>
+                <p>→ ¿Fue demasiado ambiciosa para un día?<br>
+                → ¿No tuviste tiempo de aplicarla?<br>
+                → ¿El problema era más complejo de lo pensado?<br>
+                → <strong>Ajusta y prueba algo más simple mañana</strong></p>
+            </div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 25px; border-radius: 12px; text-align: center; margin: 30px 0;">
+            <h3 style="color: #1f2937; margin-bottom: 15px;">💡 RECORDATORIO FUNDAMENTAL</h3>
+            <div style="background: white; padding: 20px; border-radius: 8px; font-style: italic; line-height: 1.8;">
+                <strong>Este es un proceso de descubrimiento, no de perfección</strong><br><br>
+                Cada día que completes, aunque sea parcialmente, estás avanzando hacia una mayor claridad y enfoque.<br><br>
+                <em>Tu transformación empieza con el primer paso</em>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+    <!-- PÁGINAS 3-9: SEMANA DE DETECCIÓN INTENSIVA (7 DÍAS) -->
+    <!-- DÍA 1 -->
+    <div class="page">
+        <div class="detection-day">
+            <h3>🔍 DÍA 1: ESCANEO DE SOBRECARGA MENTAL</h3>
+            <div style="margin-bottom: 15px;">
+                <strong>Fecha:</strong> <input type="date" style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div class="morning-prep">
+            <h4 style="color: #1d4ed8; margin-bottom: 15px;">🌅 PREPARACIÓN MATUTINA (5 minutos)</h4>
+            
+            <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4>¿QUÉ VAMOS A DETECTAR HOY?</h4>
+                <p>La sobrecarga mental es como tener 15 conversaciones simultáneas en tu cabeza. Son todos esos pensamientos, preocupaciones y "recordatorios mentales" que tu cerebro mantiene activos como pestañas abiertas en una computadora.</p>
+                
+                <div style="margin: 15px 0;">
+                    <h5>SÍNTOMAS DE SOBRECARGA MENTAL:</h5>
+                    <ul style="margin-left: 20px;">
+                        <li>Despiertas ya sintiendo cansancio mental</li>
+                        <li>Tu mente "salta" de tema en tema constantemente</li>
+                        <li>Sientes que si no recuerdas todo, se te va a olvidar algo importante</li>
+                        <li>Tienes dificultad para relajarte porque tu mente "no para"</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>MI NIVEL DE CLARIDAD ACTUAL:</label>
+                <div class="rating-scale">
+                    <span>⭐</span>
+                    <div class="number">1</div><div class="number">2</div><div class="number">3</div><div class="number">4</div><div class="number">5</div>
+                    <div class="number">6</div><div class="number">7</div><div class="number">8</div><div class="number">9</div><div class="number">10</div>
+                    <span>⭐</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #6b7280;">1 = Totalmente confundido | 10 = Súper claro</p>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 DETECTOR DE SOBRECARGA:</h4>
+            
+            <div class="question-box">
+                <label>1. ¿Cuál fue el primer pensamiento al despertar?</label>
+                <textarea placeholder='Ejemplo: "Ugh, tengo mucho que hacer"'></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>2. ¿Qué situación viene constantemente a tu mente sin resolver?</label>
+                <textarea placeholder="Ejemplo: Conflicto con compañero, proyecto atrasado"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>3. ¿Con qué tema obsesiona más tu mente últimamente?</label>
+                <textarea placeholder="Ejemplo: Trabajo estresante, dinero escaso"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>4. ¿Cuántas "pestañas mentales" tienes abiertas ahora mismo?</label>
+                <textarea placeholder="Cuenta: Trabajo + familia + finanzas + salud + proyecto personal = ___ pestañas"></textarea>
+            </div>
+        </div>
+        
+        <div class="priority-box">
+            <h4 style="color: #16a34a; margin-bottom: 10px;">🎯 MI PRIORIDAD #1 HOY:</h4>
+            <input type="text" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #16a34a; border-radius: 8px;">
+        </div>
+        
+        <div class="tasks-box">
+            <h4 style="color: #ca8a04; margin-bottom: 15px;">📝 MIS 3 TAREAS ESENCIALES:</h4>
+            <div class="checkbox-item" style="margin-bottom: 10px;">
+                <input type="checkbox">
+                <input type="text" style="flex: 1; margin-left: 10px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </div>
+            <div class="checkbox-item" style="margin-bottom: 10px;">
+                <input type="checkbox">
+                <input type="text" style="flex: 1; margin-left: 10px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </div>
+            <div class="checkbox-item" style="margin-bottom: 10px;">
+                <input type="checkbox">
+                <input type="text" style="flex: 1; margin-left: 10px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div style="background: #fef2f2; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ef4444;">
+            <h4 style="color: #dc2626; margin-bottom: 10px;">🚨 SOBRECARGA DETECTADA:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #fca5a5; border-radius: 6px; min-height: 80px;" placeholder="Mi mayor ladrón de energía mental hoy es..."></textarea>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #0ea5e9;">
+            <h4 style="color: #0369a1; margin-bottom: 10px;">🛡️ MI ESTRATEGIA ANTI-SOBRECARGA:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #7dd3fc; border-radius: 6px; min-height: 80px;" placeholder="Para cerrar pestañas mentales HOY, voy a..."></textarea>
+        </div>
+        
+        <div class="evening-review">
+            <h4 style="color: #374151; margin-bottom: 15px;">🌙 REVISIÓN NOCTURNA:</h4>
+            <div class="checkbox-group" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Logré mi prioridad #1?</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Mi estrategia anti-sobrecarga funcionó?</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Logré "cerrar" alguna pestaña mental hoy?</label>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="font-weight: 500;">Mi nivel de claridad ahora:</label>
+                <div class="rating-scale">
+                    <span>⭐</span>
+                    <div class="number">1</div><div class="number">2</div><div class="number">3</div><div class="number">4</div><div class="number">5</div>
+                    <div class="number">6</div><div class="number">7</div><div class="number">8</div><div class="number">9</div><div class="number">10</div>
+                    <span>⭐</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="font-weight: 500; display: block; margin-bottom: 8px;">💡 DESCUBRIMIENTO DEL DÍA:</label>
+                <textarea style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; min-height: 60px;" placeholder="¿Qué aprendiste sobre tu sobrecarga mental que no sabías antes?"></textarea>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+    <!-- DÍA 2: VAMPIROS EMOCIONALES -->
+    <div class="page">
+        <div class="detection-day">
+            <h3>🔍 DÍA 2: ESCANEO DE VAMPIROS EMOCIONALES</h3>
+            <div style="margin-bottom: 15px;">
+                <strong>Fecha:</strong> <input type="date" style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div class="morning-prep">
+            <h4 style="color: #1d4ed8; margin-bottom: 15px;">🌅 PREPARACIÓN MATUTINA (5 minutos)</h4>
+            
+            <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4>¿QUÉ VAMOS A DETECTAR HOY?</h4>
+                <p>Los vampiros emocionales son personas, lugares o situaciones que literalmente "chupan" tu energía vital. No es cansancio normal por actividad física, sino esa sensación específica de que tu energía emocional se desplomó después de cierta interacción.</p>
+                
+                <div style="margin: 15px 0;">
+                    <h5>DIFERENCIA CLAVE: Cansancio Normal vs. Drenaje Emocional</h5>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>Cansancio normal:</strong> Hiciste ejercicio, trabajaste duro → te sientes físicamente cansado pero satisfecho</li>
+                        <li><strong>Drenaje emocional:</strong> Después de hablar con X persona → te sientes vacío, agotado, necesitas recuperarte emocionalmente</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>MI NIVEL DE ENERGÍA EMOCIONAL:</label>
+                <div class="rating-scale">
+                    <span>⭐</span>
+                    <div class="number">1</div><div class="number">2</div><div class="number">3</div><div class="number">4</div><div class="number">5</div>
+                    <div class="number">6</div><div class="number">7</div><div class="number">8</div><div class="number">9</div><div class="number">10</div>
+                    <span>⭐</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #6b7280;">1 = Agotado emocionalmente | 10 = Lleno de energía positiva</p>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 DETECTOR DE VAMPIROS:</h4>
+            
+            <div class="question-box">
+                <label>1. ¿Después de hablar con quién te sientes más cansado emocionalmente?</label>
+                <textarea placeholder="Ejemplo: Compañero quejumbroso, familiar crítico"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>2. ¿Qué actividad haces por obligación que te vacía por dentro?</label>
+                <textarea placeholder="Ejemplo: Reuniones tóxicas, eventos sociales forzados"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>3. ¿En qué lugar tu energía se desploma automáticamente?</label>
+                <textarea placeholder="Ejemplo: Oficina tóxica, reuniones familiares"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>4. ¿Con quién finges estar bien cuando por dentro estás agotado?</label>
+                <textarea placeholder="Ejemplo: Jefe demandante, pareja que no entiende"></textarea>
+            </div>
+        </div>
+        
+        <div class="priority-box">
+            <h4 style="color: #16a34a; margin-bottom: 10px;">🎯 MI PRIORIDAD #1 HOY:</h4>
+            <input type="text" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #16a34a; border-radius: 8px;">
+        </div>
+        
+        <div style="background: #fef2f2; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ef4444;">
+            <h4 style="color: #dc2626; margin-bottom: 10px;">🚨 VAMPIRO DETECTADO:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #fca5a5; border-radius: 6px; min-height: 80px;" placeholder="Mi mayor drenador emocional es..."></textarea>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #0ea5e9;">
+            <h4 style="color: #0369a1; margin-bottom: 10px;">🛡️ MI ESTRATEGIA ANTI-VAMPIRO:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #7dd3fc; border-radius: 6px; min-height: 80px;" placeholder="Para proteger mi energía emocional HOY, voy a..."></textarea>
+        </div>
+        
+        <div class="evening-review">
+            <h4 style="color: #374151; margin-bottom: 15px;">🌙 REVISIÓN NOCTURNA:</h4>
+            <div class="checkbox-group" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Logré mi prioridad #1?</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Mi estrategia anti-vampiro funcionó?</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Logré proteger mi energía emocional hoy?</label>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="font-weight: 500; display: block; margin-bottom: 8px;">💡 DESCUBRIMIENTO DEL DÍA:</label>
+                <textarea style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; min-height: 60px;" placeholder="¿Qué patrón de drenaje emocional identificaste?"></textarea>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+    <!-- DÍA 3: DECISIONES PENDIENTES -->
+    <div class="page">
+        <div class="detection-day">
+            <h3>🔍 DÍA 3: ESCANEO DE DECISIONES PENDIENTES</h3>
+            <div style="margin-bottom: 15px;">
+                <strong>Fecha:</strong> <input type="date" style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div class="morning-prep">
+            <h4 style="color: #1d4ed8; margin-bottom: 15px;">🌅 PREPARACIÓN MATUTINA (5 minutos)</h4>
+            
+            <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4>¿QUÉ VAMOS A DETECTAR HOY?</h4>
+                <p>Las decisiones que evitas tomar se convierten en "peso mental" invisible. Como archivos abiertos en tu computadora, consumen energía de fondo constantemente. Hoy vamos a identificar qué decisiones tienes pendientes para poder cerrar esas "pestañas mentales".</p>
+            </div>
+            
+            <div class="question-box">
+                <label>MI NIVEL DE DECISIÓN ACTUAL:</label>
+                <div class="rating-scale">
+                    <span>⭐</span>
+                    <div class="number">1</div><div class="number">2</div><div class="number">3</div><div class="number">4</div><div class="number">5</div>
+                    <div class="number">6</div><div class="number">7</div><div class="number">8</div><div class="number">9</div><div class="number">10</div>
+                    <span>⭐</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #6b7280;">1 = Paralizado, no puedo decidir | 10 = Súper claro, decido con confianza</p>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 DETECTOR DE DECISIONES:</h4>
+            
+            <div class="question-box">
+                <label>1. ¿Qué decisión has estado evitando por semanas/meses?</label>
+                <textarea placeholder='Ejemplo: "Si renuncio o no", "Si confronto a mi jefe"'></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>2. ¿Sobre qué tema cambias de opinión constantemente?</label>
+                <textarea placeholder='Ejemplo: "Si estudiar una maestría", "Si mudarme"'></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>3. ¿Qué situación te tiene en "modo análisis infinito"?</label>
+                <textarea placeholder="Ejemplo: Analizando si ese negocio es bueno"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>4. ¿Qué decisión pequeña has convertido en grande por overthinking?</label>
+                <textarea placeholder="Ejemplo: Qué color pintar la habitación"></textarea>
+            </div>
+        </div>
+        
+        <div class="priority-box">
+            <h4 style="color: #16a34a; margin-bottom: 10px;">🎯 MI PRIORIDAD #1 HOY:</h4>
+            <input type="text" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #16a34a; border-radius: 8px;">
+        </div>
+        
+        <div style="background: #fef2f2; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ef4444;">
+            <h4 style="color: #dc2626; margin-bottom: 10px;">🚨 DECISIÓN DETECTADA:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #fca5a5; border-radius: 6px; min-height: 80px;" placeholder="Mi decisión más drenadera es..."></textarea>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #0ea5e9;">
+            <h4 style="color: #0369a1; margin-bottom: 10px;">🛡️ MI ESTRATEGIA ANTI-INDECISIÓN:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #7dd3fc; border-radius: 6px; min-height: 80px;" placeholder="Para avanzar en esta decisión HOY, voy a..."></textarea>
+        </div>
+        
+        <div class="evening-review">
+            <h4 style="color: #374151; margin-bottom: 15px;">🌙 REVISIÓN NOCTURNA:</h4>
+            <div class="checkbox-group" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Logré mi prioridad #1?</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Mi estrategia anti-indecisión funcionó?</label>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="font-weight: 500; display: block; margin-bottom: 8px;">💡 DESCUBRIMIENTO DEL DÍA:</label>
+                <textarea style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; min-height: 60px;" placeholder="¿Qué aprendiste sobre tus decisiones pendientes?"></textarea>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+    <!-- CONTINÚO CON LOS DÍAS 4, 5, 6, 7 -->
+    <!-- DÍA 4: COMPROMISOS TÓXICOS -->
+    <div class="page">
+        <div class="detection-day">
+            <h3>🔍 DÍA 4: ESCANEO DE COMPROMISOS TÓXICOS</h3>
+            <div style="margin-bottom: 15px;">
+                <strong>Fecha:</strong> <input type="date" style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div class="morning-prep">
+            <h4 style="color: #1d4ed8; margin-bottom: 15px;">🌅 PREPARACIÓN MATUTINA (5 minutos)</h4>
+            
+            <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4>¿QUÉ VAMOS A DETECTAR HOY?</h4>
+                <p>Los compromisos tóxicos son actividades, responsabilidades o "sí" que dijiste y ahora drenan tu energía. Son como contratos que firmaste cuando eras diferente y ahora ya no te sirven, pero sigues cumpliendo por culpa, obligación o miedo al conflicto.</p>
+            </div>
+            
+            <div class="question-box">
+                <label>MI NIVEL DE LÍMITES ACTUALES:</label>
+                <div class="rating-scale">
+                    <span>⭐</span>
+                    <div class="number">1</div><div class="number">2</div><div class="number">3</div><div class="number">4</div><div class="number">5</div>
+                    <div class="number">6</div><div class="number">7</div><div class="number">8</div><div class="number">9</div><div class="number">10</div>
+                    <span>⭐</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #6b7280;">1 = No tengo límites, digo sí a todo | 10 = Límites súper claros</p>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 DETECTOR DE COMPROMISOS:</h4>
+            
+            <div class="question-box">
+                <label>1. ¿A qué actividad regular asistes sin ganas?</label>
+                <textarea placeholder="Ejemplo: Reuniones familiares los domingos, clases que ya no me gustan"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>2. ¿Qué responsabilidad tienes que no es realmente tuya?</label>
+                <textarea placeholder="Ejemplo: Resolver problemas de mi hermana, hacer trabajo de mi compañero"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>3. ¿Qué favor haces repetidamente que te molesta?</label>
+                <textarea placeholder="Ejemplo: Llevar siempre a X persona, prestar dinero constantemente"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>4. ¿En qué proyecto/actividad sigues por culpa o pena?</label>
+                <textarea placeholder="Ejemplo: Voluntariado que ya no disfruto"></textarea>
+            </div>
+        </div>
+        
+        <div class="priority-box">
+            <h4 style="color: #16a34a; margin-bottom: 10px;">🎯 MI PRIORIDAD #1 HOY:</h4>
+            <input type="text" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #16a34a; border-radius: 8px;">
+        </div>
+        
+        <div style="background: #fef2f2; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ef4444;">
+            <h4 style="color: #dc2626; margin-bottom: 10px;">🚨 COMPROMISO DETECTADO:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #fca5a5; border-radius: 6px; min-height: 80px;" placeholder="Mi compromiso más tóxico es..."></textarea>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #0ea5e9;">
+            <h4 style="color: #0369a1; margin-bottom: 10px;">🛡️ MI ESTRATEGIA ANTI-COMPROMISO:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #7dd3fc; border-radius: 6px; min-height: 80px;" placeholder="Para proteger mi energía de este compromiso HOY, voy a..."></textarea>
+        </div>
+        
+        <div class="evening-review">
+            <h4 style="color: #374151; margin-bottom: 15px;">🌙 REVISIÓN NOCTURNA:</h4>
+            <div class="checkbox-group" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Logré mi prioridad #1?</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Mi estrategia anti-compromiso funcionó?</label>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="font-weight: 500; display: block; margin-bottom: 8px;">💡 DESCUBRIMIENTO DEL DÍA:</label>
+                <textarea style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; min-height: 60px;" placeholder="¿Qué descubriste sobre tus compromisos tóxicos?"></textarea>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+<div class="page">
+        <div class="detection-day">
+            <h3>🔍 DÍA 5: ESCANEO DE PERFECCIONISMO OCULTO</h3>
+            <div style="margin-bottom: 15px;">
+                <strong>Fecha:</strong> <input type="date" style="padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div class="morning-prep">
+            <h4 style="color: #1d4ed8; margin-bottom: 15px;">🌅 PREPARACIÓN MATUTINA (5 minutos)</h4>
+            
+            <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <h4>¿QUÉ VAMOS A DETECTAR HOY?</h4>
+                <p>El perfeccionismo oculto es más sutil que el obvio. No es solo querer que todo esté perfecto, sino esas pequeñas formas en que te bloqueas, procrastinas o te saboteas porque "no está lo suficientemente bien". Es el enemigo silencioso del progreso.</p>
+            </div>
+            
+            <div class="question-box">
+                <label>MI NIVEL DE AUTOCOMPASIÓN ACTUAL:</label>
+                <div class="rating-scale">
+                    <span>⭐</span>
+                    <div class="number">1</div><div class="number">2</div><div class="number">3</div><div class="number">4</div><div class="number">5</div>
+                    <div class="number">6</div><div class="number">7</div><div class="number">8</div><div class="number">9</div><div class="number">10</div>
+                    <span>⭐</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #6b7280;">1 = Soy muy duro conmigo mismo | 10 = Me trato con amor y comprensión</p>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 DETECTOR DE PERFECCIONISMO:</h4>
+            
+            <div class="question-box">
+                <label>1. ¿Qué proyecto has estado "perfeccionando" en lugar de terminar?</label>
+                <textarea placeholder="Ejemplo: Mi currículum, esa presentación, el diseño de mi página web"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>2. ¿En qué área sientes que "nunca es suficiente" lo que haces?</label>
+                <textarea placeholder="Ejemplo: Como padre/madre, en mi trabajo, en mis relaciones"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>3. ¿Qué evitas empezar porque "no tienes las condiciones perfectas"?</label>
+                <textarea placeholder="Ejemplo: Ejercicio porque no tengo el gimnasio ideal"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>4. ¿Cuándo fue la última vez que rehiciste algo que ya estaba bien?</label>
+                <textarea placeholder="Ejemplo: Reescribí un email 5 veces"></textarea>
+            </div>
+        </div>
+        
+        <div class="priority-box">
+            <h4 style="color: #16a34a; margin-bottom: 10px;">🎯 MI PRIORIDAD #1 HOY:</h4>
+            <input type="text" style="width: 100%; padding: 12px; font-size: 16px; border: 2px solid #16a34a; border-radius: 8px;">
+        </div>
+        
+        <div style="background: #fef2f2; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #ef4444;">
+            <h4 style="color: #dc2626; margin-bottom: 10px;">🚨 PERFECCIONISMO DETECTADO:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #fca5a5; border-radius: 6px; min-height: 80px;" placeholder="Mi área más perfeccionista es..."></textarea>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 5px solid #0ea5e9;">
+            <h4 style="color: #0369a1; margin-bottom: 10px;">🛡️ MI ESTRATEGIA ANTI-PERFECCIONISMO:</h4>
+            <textarea style="width: 100%; padding: 12px; border: 1px solid #7dd3fc; border-radius: 6px; min-height: 80px;" placeholder="Para ser más gentil conmigo HOY, voy a..."></textarea>
+        </div>
+        
+        <div class="evening-review">
+            <h4 style="color: #374151; margin-bottom: 15px;">🌙 REVISIÓN NOCTURNA:</h4>
+            <div class="checkbox-group" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Logré mi prioridad #1?</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox"><label>¿Mi estrategia anti-perfeccionismo funcionó?</label>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <label style="font-weight: 500; display: block; margin-bottom: 8px;">💡 DESCUBRIMIENTO DEL DÍA:</label>
+              <textarea style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; min-height: 60px;" placeholder="¿Qué patrón de perfecCionismo descubriste?"></textarea>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+
+
+
+
+
+<!-- PÁGINA 10: REFLEXIONANDO SOBRE MI AÑO PASADO -->
+    <div class="page">
+        <div class="section-header">
+            <h2>🔍 MIRANDO HACIA ATRÁS</h2>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+            <p style="font-size: 1.1rem; text-align: center; color: #1f2937; font-style: italic;">
+                "Para avanzar, primero debemos reflexionar"<br>
+                "El pasado enseña, el presente transforma"
+            </p>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">🎯 PROPÓSITO DE ESTA REFLEXIÓN</h4>
+            <p>Antes de crear tu visión futura, necesitas hacer inventario honesto del pasado. Esta reflexión no es para juzgarte, sino para extraer sabiduría valiosa que te guíe hacia un año más enfocado y satisfactorio.</p>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #16a34a; margin-bottom: 15px;">🌟 CELEBRANDO MIS VICTORIAS</h4>
+            
+            <div class="question-box">
+                <label>¿Cuál fue lo mejor que me pasó este año?</label>
+                <textarea style="min-height: 100px;" placeholder="Mi momento dorado del año fue..."></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>¿Por qué fue tan especial para mí?</label>
+                <textarea placeholder="Lo que hizo especial este momento..."></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>¿Qué metas específicas logré este año?</label>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px;">
+                    <div class="checkbox-item">
+                        <input type="checkbox">
+                        <input type="text" style="flex: 1; margin-left: 10px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Logro 1">
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox">
+                        <input type="text" style="flex: 1; margin-left: 10px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Logro 2">
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox">
+                        <input type="text" style="flex: 1; margin-left: 10px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Logro 3">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>¿De qué logro me siento más orgulloso y por qué?</label>
+                <textarea placeholder="Mi mayor orgullo personal..."></textarea>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔄 ANALIZANDO LO QUE NO FUNCIONÓ</h4>
+            
+            <div class="question-box">
+                <label>¿Qué quise hacer pero no hice?</label>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px;">
+                    <input type="text" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Meta pendiente 1">
+                    <input type="text" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Meta pendiente 2">
+                    <input type="text" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Meta pendiente 3">
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>¿Cuáles fueron mis 3 momentos más desafiantes?</label>
+                <div style="margin-top: 10px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">DESAFÍO #1:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Describe el desafío">
+                        <div style="margin-top: 8px;">
+                            <label style="font-size: 0.8rem;">¿Qué aprendí de esto?</label>
+                            <textarea style="min-height: 60px;" placeholder="Lección aprendida"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">DESAFÍO #2:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Describe el desafío">
+                        <div style="margin-top: 8px;">
+                            <label style="font-size: 0.8rem;">¿Cómo me hizo más fuerte?</label>
+                            <textarea style="min-height: 60px;" placeholder="Fortaleza ganada"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #f5f3ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #8b5cf6; margin-bottom: 15px;">🎓 MIS LECCIONES MÁS VALIOSAS</h4>
+            
+            <div class="question-box">
+                <label>🥇 LECCIÓN #1 que cambiará mi próximo año:</label>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <label style="font-size: 0.9rem;">QUÉ APRENDÍ:</label>
+                    <textarea style="margin-bottom: 10px;" placeholder="La lección más importante..."></textarea>
+                    <label style="font-size: 0.9rem;">CÓMO LO APLICARÉ:</label>
+                    <textarea placeholder="Plan de aplicación..."></textarea>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>🥈 LECCIÓN #2:</label>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <label style="font-size: 0.9rem;">QUÉ APRENDÍ:</label>
+                    <textarea style="margin-bottom: 10px;" placeholder="Segunda lección importante..."></textarea>
+                    <label style="font-size: 0.9rem;">CÓMO LO APLICARÉ:</label>
+                    <textarea placeholder="Plan de aplicación..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #eff6ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #2563eb; margin-bottom: 15px;">🔗 CONECTANDO
+ <h4 style="color: #2563eb; margin-bottom: 15px;">🔗 CONECTANDO PASADO CON MI SEMANA DE DETECCIÓN</h4>
+            
+            <div class="question-box">
+                <label>Mirando mi año pasado, ¿qué drenes detectados esta semana ya estaban afectándome?</label>
+                <div style="margin-top: 10px;">
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">SOBRECARGA MENTAL:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="¿Cómo me afectó durante el año?">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">VAMPIROS EMOCIONALES:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="¿Cuánto tiempo/energía me robaron?">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">DECISIONES PENDIENTES:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="¿Qué oportunidades perdí por no decidir?">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">💡 SÍNTESIS PARA MI FUTURO</h4>
+            
+            <div class="question-box">
+                <label>MI FÓRMULA PERSONAL DE ÉXITO (basada en lo que SÍ funcionó):</label>
+                <div style="margin-top: 10px;">
+                    <div style="margin-bottom: 8px;">
+                        <label style="font-size: 0.9rem;">Soy exitoso cuando:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <label style="font-size: 0.9rem;">Me siento más pleno cuando:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <label style="font-size: 0.9rem;">Tengo más energía cuando:</label>
+                        <input type="text" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>MI LISTA DE "NUNCA MÁS" (basada en lo que me drenó):</label>
+                <div style="margin-top: 10px;">
+                    <textarea style="min-height: 80px;" placeholder="• Nunca más voy a...&#10;• Nunca más permitiré que...&#10;• Nunca más sacrificaré..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+
+<!-- PÁGINA 11: MIS RELACIONES Y CONEXIONES -->
+    <div class="page">
+        <div class="section-header">
+            <h2>👥 MIS RELACIONES IMPORTANTES</h2>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+            <p style="font-size: 1.1rem; text-align: center; color: #1f2937; font-style: italic;">
+                "Las personas moldean nuestra energía y destino"<br>
+                "Dime con quién andas y te diré qué tan enfocado estás"
+            </p>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">🎯 PROPÓSITO DE ESTA REFLEXIÓN</h4>
+            <p>Las relaciones no son neutrales: o te energizan o te drenan, o te inspiran o te limitan. Después de detectar tus vampiros emocionales, es momento de hacer un mapa completo de tus relaciones para nutrir las que te elevan y establecer límites con las que te agotan.</p>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #16a34a; margin-bottom: 15px;">🏆 MIS PREMIOS RELACIONALES</h4>
+            
+            <div class="relationships-grid">
+                <div class="question-box">
+                    <label>Mi Confidente (a quien le cuento todo):</label>
+                    <input type="text" placeholder="Nombre">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿Por qué es especial?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <label>Mi Roca (mi mayor apoyo):</label>
+                    <input type="text" placeholder="Nombre">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿Cómo me apoya específicamente?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <label>Más Divertido (me hace reír siempre):</label>
+                    <input type="text" placeholder="Nombre">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿Qué tipo de energía me da?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <label>Más Inspirador (me motiva a crecer):</label>
+                    <input type="text" placeholder="Nombre">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿Qué me inspira de esta persona?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 AUDITORÍA ENERGÉTICA DE MIS RELACIONES</h4>
+            
+            <div class="question-box">
+                <label>PERSONAS QUE ME ENERGIZAN (+):</label>
+                <div style="margin-top: 10px;">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 8px;">
+                        <input type="text" placeholder="Nombre" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        <select style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                            <option value="">Energía</option>
+                            <option value="+10">+10</option>
+                            <option value="+8">+8</option>
+                            <option value="+6">+6</option>
+                            <option value="+4">+4</option>
+                        </select>
+                    </div>
+                    <textarea style="margin-bottom: 10px;" placeholder="¿Por qué me energiza?"></textarea>
+                    
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 8px;">
+                        <input type="text" placeholder="Nombre" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        <select style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                            <option value="">Energía</option>
+                            <option value="+10">+10</option>
+                            <option value="+8">+8</option>
+                            <option value="+6">+6</option>
+                            <option value="+4">+4</option>
+                        </select>
+                    </div>
+                    <textarea placeholder="¿Por qué me energiza?"></textarea>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>PERSONAS QUE ME DRENAN (-):</label>
+                <div style="margin-top: 10px;">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 8px;">
+                        <input type="text" placeholder="Nombre" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        <select style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                            <option value="">Energía</option>
+                            <option value="-10">-10</option>
+                            <option value="-8">-8</option>
+                            <option value="-6">-6</option>
+                            <option value="-4">-4</option>
+                        </select>
+                    </div>
+                    <textarea style="margin-bottom: 10px;" placeholder="¿Por qué me drena?"></textarea>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9rem;">¿Es posible mejorar esta relación?</label>
+                        <div class="checkbox-group" style="margin-top: 5px;">
+                            <div class="checkbox-item">
+                                <input type="radio" name="mejorar_1" id="si_1">
+                                <label for="si_1">Sí</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="mejorar_1" id="no_1">
+                                <label for="no_1">No</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="mejorar_1" id="tal_vez_1">
+                                <label for="tal_vez_1">Tal vez</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #f5f3ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #8b5cf6; margin-bottom: 15px;">💡 ANÁLISIS PROFUNDO DE PATRONES</h4>
+            
+            <div class="question-box">
+                <label>¿Qué tipo de personas me energizan más?</label>
+                <textarea placeholder="Ejemplo: personas positivas, ambiciosas, tranquilas, divertidas"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>¿Qué tipo de personas me drenan más?</label>
+                <textarea placeholder="Ejemplo: quejumbrosas, dramáticas, negativas, controladoras"></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>¿En qué tipo de dinámicas me vuelvo tóxico yo?</label>
+                <textarea placeholder="Sé honesto: ¿cuándo tú drenas a otros?"></textarea>
+            </div>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #16a34a; margin-bottom: 15px;">🌱 CULTIVANDO MEJORES RELACIONES</h4>
+            
+            <div class="question-box">
+                <label>RELACIÓN #1 A NUTRIR:</label>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <label style="font-size: 0.9rem;">PERSONA:</label>
+                    <input type="text" style="margin-bottom: 10px;" placeholder="Nombre">
+                    <label style="font-size: 0.9rem;">¿POR QUÉ ES IMPORTANTE PARA MÍ?:</label>
+                    <textarea style="margin-bottom: 10px; min-height: 60px;"></textarea>
+                    <label style="font-size: 0.9rem;">¿CÓMO VOY A INVERTIR MÁS EN ESTA RELACIÓN?</label>
+                    <textarea placeholder="• Acción específica 1&#10;• Acción específica 2"></textarea>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>RELACIÓN QUE NECESITA LÍMITES:</label>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                    <label style="font-size: 0.9rem;">PERSONA:</label>
+                    <input type="text" style="margin-bottom: 10px;" placeholder="Nombre">
+                    <label style="font-size: 0.9rem;">PROBLEMA ESPECÍFICO:</label>
+                    <textarea style="margin-bottom: 10px; min-height: 60px;"></textarea>
+                    <label style="font-size: 0.9rem;">LÍMITE QUE NECESITO ESTABLECER:</label>
+                    <textarea style="margin-bottom: 10px;"></textarea>
+                    <label style="font-size: 0.9rem;">¿CÓMO VOY A COMUNICAR ESTE LÍMITE?</label>
+                    <textarea></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+    <!-- PÁGINA 12: CONSTRUYENDO MI TEMA ANUAL -->
+    <div class="page">
+        <div class="section-header">
+            <h2>🎨 CONSTRUYENDO MI TEMA ANUAL</h2>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+            <p style="font-size: 1.1rem; text-align: center; color: #1f2937; font-style: italic;">
+                "Un tema te da dirección cuando las metas se sienten abrumadoras y claridad cuando todo parece confuso"
+            </p>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">🎯 ¿QUÉ ES UN TEMA ANUAL?</h4>
+            <p>Un tema anual es diferente a una meta. Mientras una meta es específica ("Quiero bajar 10 kilos"), un tema es amplio y orientador ("Año de Vitalidad"). Tu tema surgirá de los drenes que detectaste y quieres eliminar.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 15px 0;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <h4 style="color: #dc2626; margin-bottom: 8px;">❌ Meta:</h4>
+                    <p>"Quiero bajar 10 kilos"</p>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #16a34a;">
+                    <h4 style="color: #16a34a; margin-bottom: 8px;">✅ Tema:</h4>
+                    <p>"Año de Vitalidad" (incluye ejercicio, alimentación, energía, sueño)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 CONECTANDO MIS DETECCIONES</h4>
+            
+            <div class="question-box">
+                <label>Revisando mi semana de detección, mis principales drenes fueron:</label>
+                <div style="margin: 10px 0;">
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>1. Día 1 (Sobrecarga Mental):</strong></label>
+                        <input type="text" style="width: 100%; margin-top: 5px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>2. Día 2 (Vampiros Emocionales):</strong></label>
+                        <input type="text" style="width: 100%; margin-top: 5px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>3. Mi patrón principal es:</strong></label>
+                        <input type="text" style="width: 100%; margin-top: 5px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Si tuviera que resumir qué tipo de drenes me afectan más...">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>Lo que me daría MÁS energía sería:</label>
+                <textarea placeholder="¿Qué actividades, personas o situaciones te energizan más?"></textarea>
+            </div>
+        </div>
+        
+        <div class="theme-areas">
+            <div class="area-box">
+                <h4>PERSONAL</h4>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Salud</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Basándome en mis drenes detectados..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Gratitud</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Considerando mi análisis del año..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Atención</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Pensando en mi multitasking..."></textarea>
+                </div>
+            </div>
+            
+            <div class="area-box">
+                <h4>PROFESIONAL</h4>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Éxito</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Considerando mi perfeccionismo..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Productividad</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Basándome en mi sobrecarga..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Innovación</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Pensando en mi creatividad..."></textarea>
+                </div>
+            </div>
+            
+            <div class="area-box">
+                <h4>SOCIAL</h4>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Familia</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Basándome en mis vampiros emocionales..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Amigos</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Considerando mis relaciones que energizan..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Comunidad</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Pensando en mi impacto..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div
+
+
+ <!-- PÁGINA 12: CONSTRUYENDO MI TEMA ANUAL -->
+    <div class="page">
+        <div class="section-header">
+            <h2>🎨 CONSTRUYENDO MI TEMA ANUAL</h2>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+            <p style="font-size: 1.1rem; text-align: center; color: #1f2937; font-style: italic;">
+                "Un tema te da dirección cuando las metas se sienten abrumadoras y claridad cuando todo parece confuso"
+            </p>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">🎯 ¿QUÉ ES UN TEMA ANUAL?</h4>
+            <p>Un tema anual es diferente a una meta. Mientras una meta es específica ("Quiero bajar 10 kilos"), un tema es amplio y orientador ("Año de Vitalidad"). Tu tema surgirá de los drenes que detectaste y quieres eliminar.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 15px 0;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <h4 style="color: #dc2626; margin-bottom: 8px;">❌ Meta:</h4>
+                    <p>"Quiero bajar 10 kilos"</p>
+                </div>
+                <div style="background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #16a34a;">
+                    <h4 style="color: #16a34a; margin-bottom: 8px;">✅ Tema:</h4>
+                    <p>"Año de Vitalidad" (incluye ejercicio, alimentación, energía, sueño)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🔍 CONECTANDO MIS DETECCIONES</h4>
+            
+            <div class="question-box">
+                <label>Revisando mi semana de detección, mis principales drenes fueron:</label>
+                <div style="margin: 10px 0;">
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>1. Día 1 (Sobrecarga Mental):</strong></label>
+                        <input type="text" style="width: 100%; margin-top: 5px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>2. Día 2 (Vampiros Emocionales):</strong></label>
+                        <input type="text" style="width: 100%; margin-top: 5px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>3. Mi patrón principal es:</strong></label>
+                        <input type="text" style="width: 100%; margin-top: 5px; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Si tuviera que resumir qué tipo de drenes me afectan más...">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>Lo que me daría MÁS energía sería:</label>
+                <textarea placeholder="¿Qué actividades, personas o situaciones te energizan más?"></textarea>
+            </div>
+        </div>
+        
+        <div class="theme-areas">
+            <div class="area-box">
+                <h4>PERSONAL</h4>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Salud</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Basándome en mis drenes detectados..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Gratitud</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Considerando mi análisis del año..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Atención</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Pensando en mi multitasking..."></textarea>
+                </div>
+            </div>
+            
+            <div class="area-box">
+                <h4>PROFESIONAL</h4>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Éxito</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Considerando mi perfeccionismo..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Productividad</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Basándome en mi sobrecarga..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Innovación</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Pensando en mi creatividad..."></textarea>
+                </div>
+            </div>
+            
+            <div class="area-box">
+                <h4>SOCIAL</h4>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Familia</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Basándome en mis vampiros emocionales..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Amigos</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Considerando mis relaciones que energizan..."></textarea>
+                    <div style="text-align: center; font-size: 0.9rem; font-weight: 600;">Comunidad</div>
+                    <textarea style="min-height: 60px; font-size: 0.8rem;" placeholder="Pensando en mi impacto..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+
+!-- PÁGINA 13: MIS METAS ANUALES -->
+    <div class="page">
+        <div class="section-header">
+            <h2>🎯 MIS METAS ANUALES</h2>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+            <p style="font-size: 1.1rem; text-align: center; color: #1f2937; font-style: italic;">
+                "Los sueños con fecha se vuelven metas"<br>
+                "Metas sin autoconocimiento son wishful thinking, autoconocimiento sin metas es potencial desperdiciado"
+            </p>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">🎯 CONSTRUYENDO METAS AUTÉNTICAS</h4>
+            <p>Tus metas no pueden ser copias de lo que otros quieren o de lo que "se supone" que deberías querer. Deben surgir orgánicamente de:</p>
+            <ul style="margin: 15px 0; margin-left: 20px;">
+                <li>Los drenes que detectaste y quieres eliminar</li>
+                <li>Tu tema anual elegido</li>
+                <li>Las lecciones de tu año pasado</li>
+                <li>Las relaciones que quieres nutrir</li>
+                <li>La persona en quien genuinamente te quieres convertir</li>
+            </ul>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #16a34a; margin-bottom: 15px;">🔮 MI VISIÓN A 5 AÑOS</h4>
+            <div class="question-box">
+                <label>¿Cómo se ve mi vida cuando he eliminado mis drenes?</label>
+                <textarea style="min-height: 120px;" placeholder="Describe tu vida ideal en 5 años cuando hayas transformado los drenes detectados en fortalezas..."></textarea>
+            </div>
+            
+            <div class="question-box">
+                <label>Cuando vivo plenamente mi tema anual, mi vida a 5 años se ve así:</label>
+                <div style="margin: 10px 0;">
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>PROFESIONAL:</strong></label>
+                        <textarea style="min-height: 60px;"></textarea>
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>PERSONAL:</strong></label>
+                        <textarea style="min-height: 60px;"></textarea>
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>RELACIONAL:</strong></label>
+                        <textarea style="min-height: 60px;"></textarea>
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <label style="font-size: 0.9rem;"><strong>IMPACTO:</strong></label>
+                        <textarea style="min-height: 60px;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">🎯 HITOS PRINCIPALES</h4>
+            <p style="margin-bottom: 15px;">Para llegar a mi visión de 5 años, estos son los hitos principales que deben suceder:</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <strong style="color: #dc2626; min-width: 40px;">HITO A:</strong>
+                    <input type="text" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Año 1-2: ¿Qué drenes debo haber eliminado?">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <strong style="color: #ea580c; min-width: 40px;">HITO B:</strong>
+                    <input type="text" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Año 2-3: ¿Qué habilidades/relaciones debo haber desarrollado?">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <strong style="color: #f59e0b; min-width: 40px;">HITO C:</strong>
+                    <input type="text" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Año 3-4: ¿Qué sistemas/límites debo haber establecido?">
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <strong style="color: #16a34a; min-width: 40px;">HITO D:</strong>
+                    <input type="text" style="flex: 1; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;" placeholder="Año 4-5: ¿Qué impacto debo estar generando?">
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #16a34a; margin-bottom: 15px;">🚀 MIS 10 METAS PARA ESTE AÑO</h4>
+            <p style="margin-bottom: 15px;">Cada meta debe responder: ¿Cómo me acerca esta meta a vivir plenamente mi tema?</p>
+            
+            <div class="goal-grid">
+                <div class="goal-box">
+                    <label style="font-weight: 600; color: #dc2626;">META #01: ELIMINANDO UN DREN PRINCIPAL</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="font-size: 0.9rem;">¿Qué dren elimina?</label>
+                            <input type="text" style="padding: 6px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem;">Fecha objetivo:</label>
+                            <input type="date" style="padding: 6px;">
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label style="font-size: 0.9rem;">¿Cómo apoya mi tema?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #16a34a;">
+                    <label style="font-weight: 600; color: #16a34a;">META #02: DESARROLLANDO UNA FORTALEZA</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="font-size: 0.9rem;">¿Qué habilidad/hábito desarrolla?</label>
+                            <input type="text" style="padding: 6px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem;">Fecha objetivo:</label>
+                            <input type="date" style="padding: 6px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #f59e0b;">
+                    <label style="font-weight: 600; color: #f59e0b;">META #03: MEJORANDO UNA RELACIÓN CLAVE</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="font-size: 0.9rem;">¿Qué relación específica?</label>
+                            <input type="text" style="padding: 6px;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem;">Fecha objetivo:</label>
+                            <input type="date" style="padding: 6px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #8b5cf6;">
+                    <label style="font-weight: 600; color: #8b5cf6;">META #04: PROFESIONAL/CARRERA</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                    <div style="margin-top: 10px;">
+                        <label style="font-size: 0.9rem;">¿Cómo apoya mi tema?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #06b6d4;">
+                    <label style="font-weight: 600; color: #06b6d4;">META #05: SALUD/BIENESTAR</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #84cc16;">
+                    <label style="font-weight: 600; color: #84cc16;">META #06: FINANCIERA</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #f97316;">
+                    <label style="font-weight: 600; color: #f97316;">META #07: APRENDIZAJE/CRECIMIENTO</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #ec4899;">
+                    <label style="font-weight: 600; color: #ec4899;">META #08: CONTRIBUCIÓN/IMPACTO</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #6366f1;">
+                    <label style="font-weight: 600; color: #6366f1;">META #09: EXPERIENCIAS/DIVERSIÓN</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                </div>
+                
+                <div class="goal-box" style="border-left-color: #10b981;">
+                    <label style="font-weight: 600; color: #10b981;">META #10: LIBERTAD PERSONAL</label>
+                    <input type="text" style="margin: 10px 0;" placeholder="Meta específica...">
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 25px; border-radius: 12px; margin: 25px 0;">
+            <h3 style="margin-bottom: 15px; text-align: center;">🏆 MI META MÁS IMPORTANTE:</h3>
+            <input type="text" style="width: 100%; padding: 15px; font-size: 1.1rem; border: none; border-radius: 6px; color: #1f2937;" placeholder="De todas mis metas, la más importante es...">
+            <div style="margin-top: 15px;">
+                <label style="display: block; margin-bottom: 8px;">¿Por qué es la más importante?</label>
+                <textarea style="width: 100%; min-height: 80px; background: rgba(255, 255, 255, 0.9); border: none; border-radius: 6px; padding: 15px; color: #1f2937;" placeholder="Esta meta es mi prioridad #1 porque..."></textarea>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+<!-- CONTINUACIÓN PÁGINA 14: PLAN DE ACCIÓN -->
+<div class="page">
+        <div class="section-header">
+            <h2>📋 PLAN DE ACCIÓN PARA MI META #1</h2>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb); padding: 25px; border-radius: 12px; margin-bottom: 25px;">
+            <p style="font-size: 1.1rem; text-align: center; color: #1f2937; font-style: italic;">
+                "Una meta sin plan es solo un deseo con fecha límite"<br>
+                "El mejor plan es el que elimina drenes mientras construye lo que realmente quieres"
+            </p>
+        </div>
+        
+        <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #16a34a; margin-bottom: 15px;">🎯 MI META MÁS IMPORTANTE (RECORDATORIO)</h4>
+            <div class="question-box">
+                <label>MI META #1:</label>
+                <input type="text" style="font-size: 1.1rem; font-weight: 500;" placeholder="Copia tu meta más importante aquí...">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="question-box">
+                    <label>FECHA OBJETIVO:</label>
+                    <input type="date" style="width: 100%;">
+                </div>
+                <div class="question-box">
+                    <label>MI TEMA ANUAL:</label>
+                    <input type="text" placeholder='"Año de ________"'>
+                </div>
+            </div>
+            <div class="question-box">
+                <label>¿CÓMO APOYA MI TEMA ANUAL?</label>
+                <textarea placeholder="Explica cómo esta meta se conecta con tu tema del año..."></textarea>
+            </div>
+        </div>
+        
+        <div style="background: #eff6ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #2563eb; margin-bottom: 15px;">📊 TAREAS ESTRATÉGICAS</h4>
+            
+            <table class="action-table">
+                <thead>
+                    <tr>
+                        <th>TAREAS (QUÉ HARÉ)</th>
+                        <th>RECURSOS (QUÉ NECESITO)</th>
+                        <th>ANTI-DRENES (CÓMO PROTEJO MI ENERGÍA)</th>
+                        <th>DEADLINE (CUÁNDO)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="TAREA #01:"></textarea>
+                            <div style="margin-top: 5px; font-size: 0.8rem;">
+                                <label>¿Qué dren elimina?</label>
+                                <input type="text" style="width: 100%; padding: 4px; border: 1px solid #e5e7eb;">
+                            </div>
+                        </td>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="Recursos necesarios..."></textarea>
+                            <div style="margin-top: 5px;">
+                                <label style="font-size: 0.8rem;">¿Tengo acceso?</label>
+                                <div style="display: flex; gap: 5px;">
+                                    <input type="radio" name="acceso1" id="si1"><label for="si1" style="font-size: 0.8rem;">Sí</label>
+                                    <input type="radio" name="acceso1" id="no1"><label for="no1" style="font-size: 0.8rem;">No</label>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="¿Cómo evito sobrecarga/vampiros?"></textarea>
+                        </td>
+                        <td>
+                            <input type="date" style="width: 100%; padding: 8px; border: none;">
+                            <div style="margin-top: 5px;">
+                                <label style="font-size: 0.8rem;">¿Es realista?</label>
+                                <div style="display: flex; gap: 5px;">
+                                    <input type="radio" name="realista1" id="si_r1"><label for="si_r1" style="font-size: 0.8rem;">Sí</label>
+                                    <input type="radio" name="realista1" id="no_r1"><label for="no_r1" style="font-size: 0.8rem;">No</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="TAREA #02:"></textarea>
+                        </td>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="Recursos necesarios..."></textarea>
+                        </td>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="Estrategia anti-drenes..."></textarea>
+                        </td>
+                        <td>
+                            <input type="date" style="width: 100%; padding: 8px; border: none;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="TAREA #03:"></textarea>
+                        </td>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="Recursos necesarios..."></textarea>
+                        </td>
+                        <td>
+                            <textarea style="width: 100%; min-height: 60px; border: none;" placeholder="Estrategia anti-drenes..."></textarea>
+                        </td>
+                        <td>
+                            <input type="date" style="width: 100%; padding: 8px; border: none;">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="background: #fef7ed; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #ea580c; margin-bottom: 15px;">⚠️ ANTICIPANDO OBSTÁCULOS</h4>
+            
+            <div class="question-box">
+                <label>OBSTÁCULOS INTERNOS (de mis drenes detectados):</label>
+                <div style="margin-top: 10px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">Si mi mente se vuelve ruidosa (sobrecarga mental):</label>
+                        <textarea style="min-height: 50px;" placeholder="Plan de contingencia:"></textarea>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">Si personas tóxicas interfieren (vampiros emocionales):</label>
+                        <textarea style="min-height: 50px;" placeholder="Plan de contingencia:"></textarea>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">Si me paralizo por indecisión:</label>
+                        <textarea style="min-height: 50px;" placeholder="Plan de contingencia:"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>OBSTÁCULOS EXTERNOS PROBABLES:</label>
+                <div style="margin-top: 10px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">OBSTÁCULO EXTERNO #1:</label>
+                        <input type="text" style="margin-bottom: 8px;" placeholder="¿Qué podría salir mal?">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">
+                            <div>
+                                <label style="font-size: 0.8rem;">¿Qué tan probable? (1-10):</label>
+                                <input type="number" min="1" max="10" style="width: 50px;">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.8rem;">¿Qué tan grave? (1-10):</label>
+                                <input type="number" min="1" max="10" style="width: 50px;">
+                            </div>
+                        </div>
+                        <textarea style="min-height: 50px;" placeholder="Plan de contingencia:"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    <div class="page">
+        <div style="background: #f5f3ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #8b5cf6; margin-bottom: 15px;">💥 MI RED DE APOYO ESTRATÉGICA</h4>
+            
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                <div class="question-box">
+                    <label>PERSONA DE ACCOUNTABILITY:</label>
+                    <input type="text" placeholder="¿Quién te ayudará a mantener el rumbo?">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿Cómo nos conectaremos?</label>
+                        <div class="checkbox-group" style="margin-top: 5px;">
+                            <div class="checkbox-item">
+                                <input type="radio" name="frecuencia_acc" id="semanal_acc">
+                                <label for="semanal_acc">Semanal</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="frecuencia_acc" id="quincenal_acc">
+                                <label for="quincenal_acc">Quincenal</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="frecuencia_acc" id="mensual_acc">
+                                <label for="mensual_acc">Mensual</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <label>PERSONA DE ÁNIMO:</label>
+                    <input type="text" placeholder="¿Quién te levanta cuando estás desanimado?">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿Cuándo la contactaré?</label>
+                        <textarea style="min-height: 50px;" placeholder="En qué situaciones..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <label>PERSONA DE CONSEJO:</label>
+                    <input type="text" placeholder="¿Quién te da perspectiva?">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿En qué situaciones la consultaré?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+                
+                <div class="question-box">
+                    <label>MI MENTOR/INSPIRACIÓN:</label>
+                    <input type="text" placeholder="¿Quién admiras y puedes contactar?">
+                    <div style="margin-top: 8px;">
+                        <label style="font-size: 0.9rem;">¿Cómo puedo aprender de esta persona?</label>
+                        <textarea style="min-height: 50px;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h4 style="color: #0369a1; margin-bottom: 15px;">📊 SISTEMA DE SEGUIMIENTO Y AJUSTE</h4>
+            
+            <div class="question-box">
+                <label>MIS MÉTRICAS PRINCIPALES:</label>
+                <div style="margin-top: 10px;">
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">MÉTRICA DE PROGRESO (¿avanzo hacia la meta?):</label>
+                        <input type="text" style="margin-bottom: 5px;" placeholder="¿Cómo la mediré?">
+                        <input type="text" placeholder="¿Con qué frecuencia?" style="font-size: 0.9rem;">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">MÉTRICA DE ENERGÍA (¿mantengo mi bienestar?):</label>
+                        <input type="text" style="margin-bottom: 5px;" placeholder="¿Cómo la mediré?">
+                        <input type="text" placeholder="¿Con qué frecuencia?" style="font-size: 0.9rem;">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 0.9rem; font-weight: 600;">MÉTRICA DE ALINEACIÓN (¿sigo conectado con mi tema?):</label>
+                        <input type="text" style="margin-bottom: 5px;" placeholder="¿Cómo la evaluaré?">
+                        <input type="text" placeholder="¿Con qué frecuencia?" style="font-size: 0.9rem;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-box">
+                <label>REVISIONES SISTEMÁTICAS:</label>
+                <div style="margin-top: 10px;">
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <h5 style="color: #2563eb;">🗓️ REVISIÓN SEMANAL (15 minutos cada viernes):</h5>
+                        <div class="checkbox-group" style="flex-direction: column; align-items: flex-start; margin-top: 8px;">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="rev_sem1">
+                                <label for="rev_sem1">¿Completé las tareas planeadas para esta semana?</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="rev_sem2">
+                                <label for="rev_sem2">¿Mantuve mis límites energéticos?</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="rev_sem3">
+                                <label for="rev_sem3">¿Qué obstáculos aparecieron y cómo los manejé?</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="rev_sem4">
+                                <label for="rev_sem4">¿Qué ajustar para la próxima semana?</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 15px; border-radius: 8        <div class="page-footer">
+            PLANNER DETECTOR - Sistema DETECTA® | Creado por: Nhora Angulo | Soporte: soporteNA@gmail.com
+        </div>
+    </div>
+
+
